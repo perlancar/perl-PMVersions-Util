@@ -1,6 +1,8 @@
 package PMVersions::Util;
 
+# AUTHORITY
 # DATE
+# DIST
 # VERSION
 
 use 5.010001;
@@ -22,7 +24,7 @@ sub read_pmversions {
     if (-e $path) {
         $hoh = Config::IOD::Reader->new->read_file($path);
     } else {
-        die "pmversions file '$path' does not exist";
+        warn "pmversions file '$path' does not exist";
     }
 
     $hoh->{GLOBAL} // {};
@@ -72,7 +74,8 @@ Usage:
 
 Read F<pmversions.ini> and return a hash of module names and versions. If
 C<$path> is not specified, will look at C<PMVERSIONS_PATH> environment variable,
-or defaults to F<~/pmversions.ini>. Will die if file cannot be read or parsed.
+or defaults to F<~/pmversions.ini>. Will warn if file does not exist. Will die
+if file cannot be read or parsed.
 
 =head2 version_from_pmversions
 
@@ -84,6 +87,9 @@ Check version from pmversions file. C<$path> will be passed to
 L</"read_pmversions"> only the first time; after that, the contents of the file
 is cached in a hash variable so the pmversions file is only read and parsed
 once.
+
+Will return undef if file does not exist or version for C<$mod> is not set in
+the pmversions file.
 
 
 =head1 ENVIRONMENT
